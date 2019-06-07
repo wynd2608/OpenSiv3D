@@ -934,7 +934,15 @@ Cursor _glfwCreateCursorX11(const GLFWimage* image, int xhot, int yhot)
 
 int _glfwPlatformInit(void)
 {
-#if !defined(X_HAVE_UTF8_STRING)
+//-----------------------------------------------
+//
+//  [Siv3D]
+//
+//	Even if the Xlib UTF-8 functions are available,
+//	Xutf8LookupString() returns XLookupNone as the value of status_return
+//	if the current locale is "C".
+//
+//#if !defined(X_HAVE_UTF8_STRING)
     // HACK: If the current locale is "C" and the Xlib UTF-8 functions are
     //       unavailable, apply the environment's locale in the hope that it's
     //       both available and not "C"
@@ -942,7 +950,9 @@ int _glfwPlatformInit(void)
     //       which is what we fall back on when UTF-8 support is missing
     if (strcmp(setlocale(LC_CTYPE, NULL), "C") == 0)
         setlocale(LC_CTYPE, "");
-#endif
+//#endif
+//
+//-----------------------------------------------
 
     XInitThreads();
     XrmInitialize();
